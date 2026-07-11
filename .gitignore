@@ -1,0 +1,67 @@
+# ==========================================
+# 1. SECURITY & SENSITIVE DATA (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.secret
+
+# ==========================================
+# 2. DOCKER & LOCAL STORAGE
+# ==========================================
+.docker/
+pgdata/
+user_uploads/
+*.db
+*.sqlite
+
+# ==========================================
+# 3. BACKEND (Python / FastAPI)
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+
+# ==========================================
+# 4. FRONTEND (Node.js / React)
+# ==========================================
+node_modules/
+/dist
+/build
+.npm
+*.log
+.eslintcache
+.parcel-cache
+.turbo
+.vercel
+.next/
+
+# ==========================================
+# 5. OS / IDE SYSTEM FILES
+# ==========================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
