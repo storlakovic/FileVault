@@ -1,0 +1,208 @@
+/*
+  ========================================
+  UploadFile.css
+  ========================================
+*/
+
+/* --- Container & Card (Analog zu Login & Register) --- */
+.upload-container {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: radial-gradient(
+            circle at top left,
+            #1e3a8a 0%,
+            transparent 35%
+    ),
+    radial-gradient(
+            circle at bottom right,
+            #312e81 0%,
+            transparent 35%
+    ),
+    #020617;
+}
+
+.upload-card {
+    width: 100%;
+    max-width: 480px; /* Etwas breiter für komfortablen Drag & Drop */
+    padding: 45px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .6);
+    color: white;
+    animation: uploadFade .6s ease;
+}
+
+@keyframes uploadFade {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.upload-card h2 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #f8fafc;
+}
+
+/* --- Drag & Drop Zone --- */
+.dropzone {
+    border: 2px dashed #334155;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    background: #0f172a;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.dropzone:hover, .dropzone.drag-active {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.dropzone-icon {
+    font-size: 40px;
+    color: #64748b;
+    transition: color 0.25s;
+}
+
+.dropzone:hover .dropzone-icon {
+    color: #3b82f6;
+}
+
+.dropzone p {
+    color: #cbd5e1;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.dropzone span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* --- Dateiliste / Vorschau --- */
+.file-preview {
+    margin-top: 20px;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #f8fafc;
+    word-break: break-all;
+}
+
+.file-size {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+
+.btn-remove:hover {
+    transform: scale(1.1);
+}
+
+/* --- Progress Bar --- */
+.progress-container {
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #1e293b;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #4f46e5);
+    width: 0%;
+    transition: width 0.2s ease;
+}
+
+/* --- Submit Button --- */
+.upload-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+    );
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.upload-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, .35);
+}
+
+.upload-btn:disabled {
+    background: #1e293b;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.upload-btn:active:not(:disabled) {
+    transform: scale(.98);
+}
+
+/* --- Success Message --- */
+.success-message {
+    background: #064e3b;
+    border: 1px solid #10b981;
+    color: #a7f3d0;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}

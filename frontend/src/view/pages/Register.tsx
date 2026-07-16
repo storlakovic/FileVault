@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import "./Login.css"
+import "./Register.css"
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -12,7 +12,7 @@ const Login = () => {
             setError('Please fill out all fields.');
             return;
         }
-        navigation.navigate('/');
+
         setError('');
 
         setEmail('');
@@ -20,9 +20,9 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-card">
-                <h2>Login</h2>
+        <div className="register-container">
+            <div className="register-card">
+                <h2>Register</h2>
 
                 {error && <p className="error-message">{error}</p>}
 
@@ -49,17 +49,13 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="login-btn">
-                        Login
+                    <button type="submit" className="register-btn">
+                        Register
                     </button>
                 </form>
-
-                <p className="footer-text">
-                    No account? <a href="register">Registrieren</a>
-                </p>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default Register;

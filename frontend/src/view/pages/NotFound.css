@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    background: #020617;
+}
+
+.not-found-container {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: radial-gradient(
+            circle at top left,
+            #1e3a8a 0%,
+            transparent 35%
+    ),
+    radial-gradient(
+            circle at bottom right,
+            #312e81 0%,
+            transparent 35%
+    ),
+    #020617;
+}
+
+.not-found-card {
+    width: 100%;
+    max-width: 460px;
+    padding: 45px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 24px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .6);
+    color: white;
+    animation: notFoundFade .6s ease;
+    text-align: center;
+}
+
+@keyframes notFoundFade {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.not-found-card h1 {
+    font-size: 80px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #60a5fa, #4f46e5); /* Matching blue-indigo gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.not-found-card h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #f8fafc; /* Slate 50 */
+}
+
+.not-found-card p {
+    color: #cbd5e1;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.home-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    text-decoration: none;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+    );
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    transition: transform .3s, box-shadow .3s, background .3s;
+}
+
+.home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, .35); /* Glowing shadow */
+}
+
+.home-btn:active {
+    transform: scale(.98);
+}
+
+@media (max-width: 500px) {
+    .not-found-card {
+        padding: 30px;
+    }
+    .not-found-card h1 {
+        font-size: 60px;
+    }
+    .not-found-card h2 {
+        font-size: 20px;
+    }
+}
