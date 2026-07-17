@@ -6,3 +6,12 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+  frontend:
+    build:
+      context: ./frontend
+    container_name: filevault-frontend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
