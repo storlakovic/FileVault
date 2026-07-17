@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        navigate('/');
+        navigate('/login');
     };
 
     return (
