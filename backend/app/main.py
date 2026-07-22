@@ -1,17 +1,39 @@
 from fastapi import FastAPI
-from starlette import endpoints
+from fastapi.middleware.cors import CORSMiddleware
 
-from api.endpoints import auth
-from api.endpoints import user_endpoint
-import uvicorn
+from api.router import api_router
+from core.config import settings
+
 
 app = FastAPI(
-    title="FileVault API",
-    version="1.0.0"
+    title=settings.app_name,
+    version="0.1.0",
+    debug=settings.debug,
+    description="Secure file storage API",
 )
 
-app.include_router(auth.router)
-app.include_router(user_endpoint.router)
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        settings.frontend_origin,
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(
+    api_router,
+    prefix=settings.api_v1_prefix,
+)
+
+
+@app.get("/", tags=["root"])
+def root() -> dict[str, str]:
+    return {
+        "message": "FileVault API läuft",
+        "environment": settings.environment,
+        "docs": "/docs",
+    }
