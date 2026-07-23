@@ -1,4 +1,12 @@
 services:
+  db: 
+    image: postgres:18.4
+    container_name: filevault-db
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
   backend:
     build:
       context: ./backend
@@ -6,6 +14,10 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on: 
+      - db
   frontend:
     build:
       context: ./frontend
@@ -15,3 +27,5 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
+volumes: 
+  postgres_data:

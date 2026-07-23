@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr
-from pydantic_settings import SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings:
+class Settings(BaseSettings):
     app_name: str = "FileVault API"
     environment: Literal[
         "development",
