@@ -1,6 +1,8 @@
 services:
   db: 
     image: postgres:18.4
+    ports: 
+      - "5432:5432"
     container_name: filevault-db
     restart: unless-stopped
     env_file:
