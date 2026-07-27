@@ -1,20 +1,13 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
-from db.session import get_db
-
+from api.dependencies.database import DatabaseSession
 
 router = APIRouter(
     prefix="/health",
     tags=["health"],
 )
-
-DatabaseSession = Annotated[Session, Depends(get_db)]
-
 
 @router.get("")
 def health_check() -> dict[str, str]:

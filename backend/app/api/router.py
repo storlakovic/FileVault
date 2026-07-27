@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from api.endpoints.user_endpoint import router as user_endpoint
-from api.dependencies.auth import router as auth_router
-from api.endpoints.health import router as health_endpoint
+from api.routes.user import router as user_endpoint
+from api.routes.auth import router as auth_router
+from api.routes.health import router as health_endpoint
 
 api_router = APIRouter()
 
