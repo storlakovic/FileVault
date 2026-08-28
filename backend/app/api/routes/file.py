@@ -3,7 +3,7 @@ from fastapi import (
     File,
     HTTPException,
     UploadFile,
-    status, Path,
+    status
 )
 from fastapi.responses import FileResponse
 from app.api.dependencies.auth import CurrentUser
@@ -88,7 +88,7 @@ def download_file(
         )
 
     file_path = (
-        Path(settings.storage_path)
+        settings.storage_path
         / stored_file.storage_name
     )
 
