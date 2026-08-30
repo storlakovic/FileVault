@@ -9,3 +9,4 @@ def get_all_users():
     return {
         "message": "All users"
     }
+    

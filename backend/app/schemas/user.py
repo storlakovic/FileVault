@@ -14,6 +14,3 @@ class UserResponse(BaseModel):
     email: EmailStr
     is_active: bool
 
-class UserLogin(BaseModel):
-    username: str = Field(min_length=3, max_length=50)
-    password: str = Field(min_length=8, max_length=128)
