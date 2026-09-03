@@ -13,7 +13,7 @@ from app.schemas.file import StoredFileResponse
 from app.services.file_service import (
     FileTooLargeError,
     InvalidFilenameError,
-    store_file,
+    store_file, get_user_files,
 )
 
 
@@ -51,3 +51,16 @@ def upload_file(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail="File is too large",
         ) from exc
+
+@router.get(
+    "",
+    response_model=list[StoredFileResponse],
+)
+def list_files(
+    db: DatabaseSession,
+    current_user: CurrentUser,
+) -> list[StoredFile]:
+    return get_user_files(
+        db=db,
+        owner_id=current_user.id,
+    )

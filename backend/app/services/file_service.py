@@ -2,6 +2,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from fastapi import UploadFile
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -85,3 +86,17 @@ def store_file(
     db.refresh(stored_file)
 
     return stored_file
+
+def get_user_files(
+    db: Session,
+    owner_id: int,
+) -> list[StoredFile]:
+    statement = (
+        select(StoredFile)
+        .where(StoredFile.owner_id == owner_id)
+        .order_by(StoredFile.created_at.desc())
+    )
+
+    return list(
+        db.scalars(statement).all()
+    )
