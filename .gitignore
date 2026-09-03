@@ -16,6 +16,7 @@ pgdata/
 user_uploads/
 *.db
 *.sqlite
+backend/storage/
 
 # ==========================================
 # 3. BACKEND (Python / FastAPI)

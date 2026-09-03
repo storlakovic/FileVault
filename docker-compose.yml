@@ -16,6 +16,10 @@ services:
     ports:
       - "8000:8000"
     restart: unless-stopped
+    environment:
+      STORAGE_PATH: /data/files
+    volumes:
+      - file_data:/data/files
     env_file:
       - ./backend/.env
     depends_on: 
@@ -29,5 +33,6 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-volumes: 
+volumes:
   postgres_data:
+  file_data:
