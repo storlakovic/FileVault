@@ -3,17 +3,18 @@ from fastapi import (
     File,
     HTTPException,
     UploadFile,
-    status,
+    status, Path,
 )
-
+from fastapi.responses import FileResponse
 from app.api.dependencies.auth import CurrentUser
 from app.api.dependencies.database import DatabaseSession
+from app.core.config import settings
 from app.models.stored_file import StoredFile
 from app.schemas.file import StoredFileResponse
 from app.services.file_service import (
     FileTooLargeError,
     InvalidFilenameError,
-    store_file, get_user_files,
+    store_file, get_user_files, download_user_file,
 )
 
 
@@ -63,4 +64,42 @@ def list_files(
     return get_user_files(
         db=db,
         owner_id=current_user.id,
+    )
+
+@router.get(
+    "/{file_id}/download",
+    response_class=FileResponse,
+)
+def download_file(
+    file_id: int,
+    db: DatabaseSession,
+    current_user: CurrentUser,
+):
+    stored_file = download_user_file(
+        db=db,
+        file_id=file_id,
+        owner_id=current_user.id,
+    )
+
+    if stored_file is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found",
+        )
+
+    file_path = (
+        Path(settings.storage_path)
+        / stored_file.storage_name
+    )
+
+    if not file_path.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found",
+        )
+
+    return FileResponse(
+        path=file_path,
+        media_type=stored_file.content_type,
+        filename=stored_file.original_name,
     )

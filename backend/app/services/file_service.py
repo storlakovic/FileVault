@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 from uuid import uuid4
 
 from fastapi import UploadFile
@@ -100,3 +101,15 @@ def get_user_files(
     return list(
         db.scalars(statement).all()
     )
+
+def download_user_file(
+    db: Session,
+    file_id: int,
+    owner_id: int,
+) -> Optional[StoredFile]:
+    statement = select(StoredFile).where(
+        StoredFile.id == file_id,
+        StoredFile.owner_id == owner_id,
+    )
+
+    return db.scalar(statement)
