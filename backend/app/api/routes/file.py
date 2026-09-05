@@ -3,7 +3,7 @@ from fastapi import (
     File,
     HTTPException,
     UploadFile,
-    status, Path, Response
+    status, Response
 )
 from fastapi.responses import FileResponse
 from app.api.dependencies.auth import CurrentUser
@@ -14,7 +14,7 @@ from app.schemas.file import StoredFileResponse
 from app.services.file_service import (
     FileTooLargeError,
     InvalidFilenameError,
-    store_file, get_user_files, download_user_file,
+    store_file, get_user_files, download_user_file, delete_user_file,
 )
 
 
