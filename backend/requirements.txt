@@ -8,3 +8,6 @@ alembic
 psycopg[binary]
 pyjwt
 python-multipart
+pytest
+httpx
+pytest-cov
