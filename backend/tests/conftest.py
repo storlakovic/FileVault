@@ -1,12 +1,9 @@
 import os
 
-os.environ.setdefault(
-    "DATABASE_URL",
-    "sqlite://",
-)
-os.environ.setdefault(
-    "JWT_SECRET_KEY",
-    "e866eee44fdecc49f8cbe8ba82144c6b3010f10b628fbf35b2ad3cc3d0ac4954",
+os.environ["DATABASE_URL"] = "sqlite://"
+os.environ["JWT_ALGORITHM"] = "HS256"
+os.environ["JWT_SECRET_KEY"] = (
+    "test-only-secret-key-never-use-in-production-1234567890"
 )
 
 import pytest
