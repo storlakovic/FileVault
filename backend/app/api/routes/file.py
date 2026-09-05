@@ -3,7 +3,7 @@ from fastapi import (
     File,
     HTTPException,
     UploadFile,
-    status
+    status, Path, Response
 )
 from fastapi.responses import FileResponse
 from app.api.dependencies.auth import CurrentUser
@@ -102,4 +102,29 @@ def download_file(
         path=file_path,
         media_type=stored_file.content_type,
         filename=stored_file.original_name,
+    )
+
+@router.delete(
+    "/{file_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+def delete_file(
+    file_id: int,
+    db: DatabaseSession,
+    current_user: CurrentUser,
+) -> Response:
+    deleted = delete_user_file(
+        db=db,
+        file_id=file_id,
+        owner_id=current_user.id,
+    )
+
+    if not deleted:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File not found",
+        )
+
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT,
     )

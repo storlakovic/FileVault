@@ -113,3 +113,46 @@ def download_user_file(
     )
 
     return db.scalar(statement)
+
+def get_user_file(
+        db: Session,
+        file_id: int,
+        owner_id: int,
+) -> Optional[StoredFile]:
+    statement = select(StoredFile).where(
+        StoredFile.id == file_id,
+        StoredFile.owner_id == owner_id,
+    )
+
+    return db.scalar(statement)
+
+def delete_user_file(
+    db: Session,
+    file_id: int,
+    owner_id: int,
+) -> bool:
+    stored_file = get_user_file(
+        db=db,
+        file_id=file_id,
+        owner_id=owner_id,
+    )
+
+    if stored_file is None:
+        return False
+
+    destination = (
+            settings.storage_path
+            / stored_file.storage_name
+    )
+
+    db.delete(stored_file)
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+
+    destination.unlink(missing_ok=True)
+
+    return True
