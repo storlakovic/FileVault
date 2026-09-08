@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import type {SubmitEvent} from 'react';
 import "./Login.css"
+import { useNavigate } from "react-router-dom";
+import {useLoginViewModel} from "../../viewModel/useLoginViewModel.ts";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const {
+        username,
+        setUsername,
+        password,
+        setPassword,
+        error,
+        isLoading,
+        login,
+    } = useLoginViewModel();
+    const handleSubmit = async (
+        event: SubmitEvent<HTMLFormElement>,
+    ): Promise<void> => {
+        event.preventDefault();
 
-    const handleSubmit = (e:any) => {
-        e.preventDefault();
-        if (!email || !password) {
-            setError('Please fill out all fields.');
-            return;
+        const success = await login();
+
+        if (success) {
+            navigate("/");
         }
-        navigation.navigate('/');
-        setError('');
-
-        setEmail('');
-        setPassword('');
     };
 
     return (
@@ -28,13 +35,13 @@ const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="input-group">
-                        <label htmlFor="email">E-Mail</label>
+                        <label htmlFor="username">Username</label>
                         <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="your@email.at"
+                            type="username"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="username"
                         />
                     </div>
 
@@ -49,8 +56,12 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" className="login-btn">
-                        Login
+                    <button
+                        type="submit"
+                        className="login-btn"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? "Logging in..." : "Login"}
                     </button>
                 </form>
 
