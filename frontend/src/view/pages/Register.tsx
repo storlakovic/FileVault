@@ -20,6 +20,7 @@ const Register = () => {
         reenteredPassword,
         setReenteredPassword,
         error,
+        isLoading,
         register,
     } = useRegisterViewModel();
 
@@ -45,7 +46,7 @@ const Register = () => {
                     <div className="input-group">
                         <label htmlFor="username">Username</label>
                         <input
-                            type="username"
+                            type="text"
                             id="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -75,7 +76,9 @@ const Register = () => {
                     </div>
 
                     <div className="input-group">
-                        <label htmlFor="password">Re-enter Password</label>
+                        <label htmlFor="reenteredPassword">
+                            Re-enter Password
+                        </label>
                         <input
                             type="password"
                             id="reenteredPassword"
@@ -85,8 +88,8 @@ const Register = () => {
                         />
                     </div>
 
-                    <button type="submit" className="register-btn">
-                        Register
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? "Registering..." : "Register"}
                     </button>
                 </form>
             </div>
