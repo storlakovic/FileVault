@@ -1,27 +1,39 @@
-import { useState } from 'react';
 import "./Register.css"
 
+import {useRegisterViewModel} from "../../viewModel/useRegisterViewModel.ts";
+import {useNavigate} from "react-router-dom";
+
+import type {
+    SubmitEvent as ReactSubmitEvent,
+} from "react";
+
 const Register = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
-    const [reenteredPassword, setReenteredPassword] = useState('');
-    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e:any) => {
-        e.preventDefault();
-        if (!email || !password || !reenteredPassword || !username) {
-            setError('Please fill out all fields.');
-            return;
+    const {
+        username,
+        setUsername,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        reenteredPassword,
+        setReenteredPassword,
+        error,
+        register,
+    } = useRegisterViewModel();
+
+    const handleSubmit = async (
+        event: ReactSubmitEvent<HTMLFormElement>,
+    ): Promise<void> => {
+        event.preventDefault();
+
+        const success = await register();
+
+        if (success) {
+            navigate("/login");
         }
-        setUsername('');
-        setError('');
-        setReenteredPassword('');
-        setEmail('');
-        setPassword('');
-        navigation.navigate('/');
     };
-
     return (
         <div className="register-container">
             <div className="register-card">
