@@ -1,4 +1,4 @@
-import { apiRequest } from "./api/client";
+import {apiBlobRequest, apiRequest} from "./api/client";
 
 export interface StoredFileResponse {
     id: number;
@@ -27,6 +27,17 @@ export function uploadFile(
 export function getFiles(): Promise<StoredFileResponse[]> {
     return apiRequest<StoredFileResponse[]>(
         "/files",
+        {
+            method: "GET",
+        },
+    );
+}
+
+export function downloadFile(
+    fileId: number,
+): Promise<Blob> {
+    return apiBlobRequest(
+        `/files/${fileId}/download`,
         {
             method: "GET",
         },

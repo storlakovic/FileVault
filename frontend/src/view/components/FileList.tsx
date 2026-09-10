@@ -1,6 +1,7 @@
 import "./FileList.css";
 
-import { useFileListViewModel } from "../../viewModel/useFileListViewModel.ts";
+import { useFileViewModel } from "../../viewModel/useFileViewModel.ts";
+
 
 function formatFileSize(bytes: number): string {
     if (bytes < 1024) {
@@ -23,7 +24,9 @@ export default function FileList() {
         files,
         isLoading,
         error,
-    } = useFileListViewModel();
+        download,
+        downloadingFileId,
+    } = useFileViewModel();
 
     if (isLoading) {
         return (
@@ -97,6 +100,19 @@ export default function FileList() {
                         <span className="vault-file__type">
                             {getFileType(file.original_name)}
                         </span>
+
+                        <button
+                            type="button"
+                            onClick={() => void download(file)}
+                            className="vault-download__button"
+                            title={`${file.original_name} herunterladen`}
+                            disabled={downloadingFileId === file.id}
+                        >
+                            <span aria-hidden="true">↓</span>
+                            {downloadingFileId === file.id
+                                ? "Downloading..."
+                                : "Download"}
+                        </button>
                     </article>
                 ))}
             </div>

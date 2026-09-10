@@ -48,3 +48,43 @@ export async function apiRequest<T>(
 
     return response.json() as Promise<T>;
 }
+
+export async function apiBlobRequest(
+    path: string,
+    options: RequestInit = {},
+): Promise<Blob> {
+    const headers = new Headers(options.headers);
+    const token = localStorage.getItem("access_token");
+
+    if (!(options.body instanceof FormData)) {
+        headers.set("Content-Type", "application/json");
+    }
+
+    if (token) {
+        headers.set(
+            "Authorization",
+            `Bearer ${token}`,
+        );
+    }
+
+    const response = await fetch(
+        `${API_URL}${path}`,
+        {
+            ...options,
+            headers,
+        },
+    );
+
+    if (!response.ok) {
+        const body = await response
+            .json()
+            .catch(() => null);
+
+        throw new ApiError(
+            response.status,
+            body?.detail ?? "Download failed",
+        );
+    }
+
+    return response.blob();
+}
