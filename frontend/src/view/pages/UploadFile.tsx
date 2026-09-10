@@ -1,25 +1,45 @@
 import React, { useState, useRef } from 'react';
 import "./UploadFile.css";
 import Navbar from "./Navbar.tsx";
+import {Navigate} from "react-router-dom";
+import {useCurrentUserViewModel} from "../../viewModel/useCurrentUserViewModel.ts";
 
 const UploadFile: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [dragActive, setDragActive] = useState<boolean>(false);
     const [progress, setProgress] = useState<number>(0);
     const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
     const [success, setSuccess] = useState<string>('');
-
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleDivClick = () => {
         fileInputRef.current?.click();
     };
 
+    const {
+        user,
+        isLoading,
+        error,
+    } = useCurrentUserViewModel();
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        if(error == "Invalid or expired token"){
+            return <Navigate to="/login" replace />;
+        }
+        return <p>{error}</p>;
+    }
+
+    if (!user) {
+        return <Navigate to="/login" replace />;
+    }
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             setFile(e.target.files[0]);
-            setError('');
             setSuccess('');
             setProgress(0);
         }
@@ -42,7 +62,6 @@ const UploadFile: React.FC = () => {
 
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             setFile(e.dataTransfer.files[0]);
-            setError('');
             setSuccess('');
             setProgress(0);
         }
@@ -57,11 +76,9 @@ const UploadFile: React.FC = () => {
     const handleUploadSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!file) {
-            setError('Bitte wähle zuerst eine Datei aus.');
             return;
         }
-
-        setError('');
+        
         setIsUploading(true);
         setProgress(0);
 
