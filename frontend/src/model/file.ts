@@ -46,8 +46,8 @@ export function downloadFile(
 
 export function deleteFile(
     fileId: number,
-): Promise<Blob> {
-    return apiRequest(
+): Promise<void> {
+    return apiRequest<void>(
         `/files/${fileId}`,
         {
             method: "DELETE",

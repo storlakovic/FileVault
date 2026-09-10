@@ -5,14 +5,18 @@ import './Navbar.css';
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        navigate('/login');
+    const handleLogout = (): void => {
+        localStorage.removeItem("access_token");
+
+        navigate("/login", {
+            replace: true,
+        });
     };
 
     return (
         <nav className="navbar">
-            <NavLink to="/home" className="nav-logo">
-                Dashboard.io
+            <NavLink to="/" className="nav-logo">
+                FileVault
             </NavLink>
             <ul className="nav-links">
                 <li>

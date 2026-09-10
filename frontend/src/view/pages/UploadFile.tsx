@@ -115,7 +115,7 @@ const UploadFile: React.FC = () => {
             <div className="upload-card">
                 <h2>Datei hochladen</h2>
 
-                {error && <p className="error-message">{uploadError}</p>}
+                {uploadError && <p className="error-message">{uploadError}</p>}
 
                 {uploadedFile && (
                     <p className="success-message">

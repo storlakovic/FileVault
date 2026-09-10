@@ -42,7 +42,7 @@ export default function FileList() {
     if (error) {
         return (
             <section className="vault-files vault-files--state vault-files--error">
-                <span>Could not load your files</span>
+                <span>{error}</span>
             </section>
         );
     }
@@ -130,7 +130,7 @@ export default function FileList() {
                                     type="button"
                                     className="vault-action vault-action--delete"
                                     onClick={() =>
-                                        removeFile(file.id)
+                                      void removeFile(file.id)
                                     }
                                     disabled={isBusy}
                                     title={`${file.original_name} löschen`}
