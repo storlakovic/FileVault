@@ -3,13 +3,10 @@ import "./UploadFile.css";
 import Navbar from "./Navbar.tsx";
 import {Navigate} from "react-router-dom";
 import {useCurrentUserViewModel} from "../../viewModel/useCurrentUserViewModel.ts";
+import {useFileUploadViewModel} from "../../viewModel/useFileUploadViewModel.ts";
 
 const UploadFile: React.FC = () => {
-    const [file, setFile] = useState<File | null>(null);
-    const [dragActive, setDragActive] = useState<boolean>(false);
-    const [progress, setProgress] = useState<number>(0);
-    const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [success, setSuccess] = useState<string>('');
+    const [dragActive, setDragActive] = useState<boolean>(false)
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleDivClick = () => {
@@ -21,6 +18,16 @@ const UploadFile: React.FC = () => {
         isLoading,
         error,
     } = useCurrentUserViewModel();
+
+    const {
+        selectedFile,
+        uploadedFile,
+        isUploading,
+        error: uploadError,
+        selectFile,
+        clearFile,
+        upload,
+    } = useFileUploadViewModel();
 
     if (isLoading) {
         return <p>Loading...</p>;
@@ -37,11 +44,13 @@ const UploadFile: React.FC = () => {
         return <Navigate to="/login" replace />;
     }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFile(e.target.files[0]);
-            setSuccess('');
-            setProgress(0);
+    const handleFileChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ): void => {
+        const file = event.target.files?.[0];
+
+        if (file) {
+            selectFile(file);
         }
     };
 
@@ -55,45 +64,41 @@ const UploadFile: React.FC = () => {
         }
     };
 
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
+    const handleDrop = (
+        event: React.DragEvent<HTMLDivElement>,
+    ): void => {
+        event.preventDefault();
+        event.stopPropagation();
         setDragActive(false);
 
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            setFile(e.dataTransfer.files[0]);
-            setSuccess('');
-            setProgress(0);
+        const file = event.dataTransfer.files?.[0];
+
+        if (file) {
+            selectFile(file);
         }
     };
 
-    const removeFile = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setFile(null);
-        setProgress(0);
+    const removeFile = (
+        event: React.MouseEvent<HTMLButtonElement>,
+    ): void => {
+        event.stopPropagation();
+        clearFile();
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
-    const handleUploadSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!file) {
-            return;
-        }
-        
-        setIsUploading(true);
-        setProgress(0);
+    const handleUploadSubmit = async (
+        event: React.FormEvent<HTMLFormElement>,
+    ): Promise<void> => {
+        event.preventDefault();
 
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setIsUploading(false);
-                    setSuccess('Datei erfolgreich hochgeladen!');
-                    setFile(null);
-                    return 100;
-                }
-                return prev + 10;
-            });
-        }, 150);
+        const success = await upload();
+
+        if (success && fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
     };
 
     const formatFileSize = (bytes: number): string => {
@@ -110,9 +115,13 @@ const UploadFile: React.FC = () => {
             <div className="upload-card">
                 <h2>Datei hochladen</h2>
 
-                {error && <p className="error-message">{error}</p>}
-                {success && <p className="success-message">{success}</p>}
+                {error && <p className="error-message">{uploadError}</p>}
 
+                {uploadedFile && (
+                    <p className="success-message">
+                        {uploadedFile.original_name} wurde erfolgreich hochgeladen.
+                    </p>
+                )}
                 <form onSubmit={handleUploadSubmit}>
                     <input
                         type="file"
@@ -137,11 +146,11 @@ const UploadFile: React.FC = () => {
                         <span>Unterstützt PDF, PNG, JPG, ZIP (max. 50MB)</span>
                     </div>
 
-                    {file && (
+                    {selectedFile && (
                         <div className="file-preview">
                             <div className="file-info">
-                                <span className="file-name">{file.name}</span>
-                                <span className="file-size">{formatFileSize(file.size)}</span>
+                                <span className="file-name">{selectedFile.name}</span>
+                                <span className="file-size">{formatFileSize(selectedFile.size)}</span>
                             </div>
                             <button
                                 type="button"
@@ -154,19 +163,10 @@ const UploadFile: React.FC = () => {
                         </div>
                     )}
 
-                    {isUploading && (
-                        <div className="progress-container">
-                            <span className="file-size">Wird hochgeladen: {progress}%</span>
-                            <div className="progress-bar">
-                                <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-                            </div>
-                        </div>
-                    )}
-
                     <button
                         type="submit"
                         className="upload-btn"
-                        disabled={!file || isUploading}
+                        disabled={!selectedFile || isUploading}
                     >
                         {isUploading ? 'Lädt hoch...' : 'Hochladen'}
                     </button>

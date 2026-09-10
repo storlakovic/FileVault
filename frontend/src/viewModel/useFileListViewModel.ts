@@ -8,7 +8,7 @@ import { getFiles } from "../model/file";
 import type { StoredFileResponse } from "../model/file";
 import { ApiError } from "../model/errors/ApiError";
 
-export function useFileViewModel() {
+export function useFileListViewModel() {
     const [files, setFiles] = useState<StoredFileResponse[]>([]);
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState("");

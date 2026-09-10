@@ -1,6 +1,6 @@
 import "./FileList.css";
 
-import { useFileViewModel } from "../../viewModel/useFileViewModel";
+import { useFileListViewModel } from "../../viewModel/useFileListViewModel.ts";
 
 function formatFileSize(bytes: number): string {
     if (bytes < 1024) {
@@ -23,7 +23,7 @@ export default function FileList() {
         files,
         isLoading,
         error,
-    } = useFileViewModel();
+    } = useFileListViewModel();
 
     if (isLoading) {
         return (
