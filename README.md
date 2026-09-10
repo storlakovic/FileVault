@@ -8,6 +8,16 @@ This project was created as a side project to refresh my knowledge of full-stack
 
 AI tools were used for guidance, debugging, explanations, and code reviews. The main purpose of FileVault was learning, experimenting, and gaining practical experience rather than building a production-ready storage platform.
 
+## Preview
+
+![FileVault dashboard](docs/home-screen.png)
+
+## Project Status
+
+FileVault is a completed learning MVP. It demonstrates the complete flow from a React interface through an authenticated FastAPI backend to PostgreSQL and persistent file storage.
+
+It is not intended to be used as a production-ready or internet-facing storage service without additional hardening such as HTTPS, rate limiting, backups, monitoring, stricter deployment configuration, and additional security controls.
+
 ## Features
 
 * User registration and login
@@ -71,9 +81,3 @@ Docker Compose creates two persistent volumes:
 The database contains file metadata such as the original filename, content type, size, owner, and storage identifier. The actual file data is stored separately in the file volume.
 
 Stopping or rebuilding the containers does not delete these volumes.
-
-## Project Status
-
-FileVault is a completed learning MVP. It demonstrates the complete flow from a React interface through an authenticated FastAPI backend to PostgreSQL and persistent file storage.
-
-It is not intended to be used as a production-ready or internet-facing storage service without additional hardening such as HTTPS, rate limiting, backups, monitoring, stricter deployment configuration, and additional security controls.
