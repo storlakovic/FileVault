@@ -46,3 +46,12 @@ export function registerUser(credentials: RegisterRequest) : Promise<UserRespons
         },
     );
 }
+
+export function getCurrentUser(): Promise<UserResponse> {
+    return apiRequest<UserResponse>(
+        "/users/me",
+        {
+            method: "GET",
+        },
+    );
+}
