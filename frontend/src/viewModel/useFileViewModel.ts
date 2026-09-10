@@ -4,19 +4,21 @@ import {
     useState,
 } from "react";
 
-import { getFiles } from "../model/file";
 import type { StoredFileResponse } from "../model/file";
 import { ApiError } from "../model/errors/ApiError";
 
 import {
+    deleteFile as deleteFileRequest,
     downloadFile as downloadFileRequest,
+    getFiles,
 } from "../model/file";
 
 export function useFileViewModel() {
     const [files, setFiles] = useState<StoredFileResponse[]>([]);
     const [isLoading, setLoading] = useState(true);
-    const [error, setError] = useState("");
     const [downloadingFileId, setDownloadingFileId] = useState<number | null>(null);
+    const [deletingFileId, setDeletingFileId] = useState<number | null>(null);
+    const [error, setError] = useState("");
 
     const loadFiles = useCallback(async (): Promise<void> => {
         setLoading(true);
@@ -59,10 +61,35 @@ export function useFileViewModel() {
             if (caughtError instanceof ApiError) {
                 setError(caughtError.message);
             } else {
-                setError("Could not download file");
+                setError("Could not download file.");
             }
         } finally {
             setDownloadingFileId(null);
+        }
+    }
+
+    async function removeFile(
+        fileId: number,
+    ): Promise<void> {
+        setDeletingFileId(fileId);
+        setError("");
+
+        try {
+            await deleteFileRequest(fileId);
+
+            setFiles((currentFiles) =>
+                currentFiles.filter(
+                    (file) => file.id !== fileId,
+                ),
+            );
+        } catch (caughtError: unknown) {
+            if (caughtError instanceof ApiError) {
+                setError(caughtError.message);
+            } else {
+                setError("Could not delete file.");
+            }
+        } finally {
+            setDeletingFileId(null);
         }
     }
 
@@ -77,5 +104,7 @@ export function useFileViewModel() {
         loadFiles,
         download,
         downloadingFileId,
+        removeFile,
+        deletingFileId,
     };
 }

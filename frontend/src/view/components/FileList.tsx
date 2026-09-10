@@ -26,6 +26,8 @@ export default function FileList() {
         error,
         download,
         downloadingFileId,
+        removeFile,
+        deletingFileId,
     } = useFileViewModel();
 
     if (isLoading) {
@@ -72,49 +74,79 @@ export default function FileList() {
             </header>
 
             <div className="vault-files__list">
-                {files.map((file) => (
-                    <article className="vault-file" key={file.id}>
-                        <div className="vault-file__icon" aria-hidden="true">
-                            📄
-                        </div>
+                {files.map((file) => {
+                    const isDownloading = downloadingFileId === file.id;
+                    const isDeleting = deletingFileId === file.id;
+                    const isBusy = isDownloading || isDeleting;
 
-                        <div className="vault-file__details">
-                            <span
-                                className="vault-file__name"
-                                title={file.original_name}
-                            >
-                                {file.original_name}
+                    return(
+                        <article className="vault-file" key={file.id}>
+                            <div className="vault-file__icon" aria-hidden="true">
+                                📄
+                            </div>
+
+                            <div className="vault-file__details">
+                                <span
+                                    className="vault-file__name"
+                                    title={file.original_name}
+                                >
+                                    {file.original_name}
+                                </span>
+
+                                <div className="vault-file__meta">
+                                    <span>{formatFileSize(file.size)}</span>
+                                    <span>•</span>
+                                    <span>
+                                        {new Date(file.created_at).toLocaleDateString(
+                                            "de-AT",
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <span className="vault-file__type">
+                                {getFileType(file.original_name)}
                             </span>
 
-                            <div className="vault-file__meta">
-                                <span>{formatFileSize(file.size)}</span>
-                                <span>•</span>
-                                <span>
-                                    {new Date(file.created_at).toLocaleDateString(
-                                        "de-AT",
-                                    )}
-                                </span>
+                            <div className="vault-file__actions">
+                                <button
+                                    type="button"
+                                    className="vault-action vault-action--download"
+                                    onClick={() =>
+                                        void download(file)
+                                    }
+                                    disabled={isBusy}
+                                    title={`${file.original_name} herunterladen`}
+                                >
+                                        <span aria-hidden="true">
+                                            ↓
+                                        </span>
+
+                                    {isDownloading
+                                        ? "Downloading..."
+                                        : "Download"}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="vault-action vault-action--delete"
+                                    onClick={() =>
+                                        removeFile(file.id)
+                                    }
+                                    disabled={isBusy}
+                                    title={`${file.original_name} löschen`}
+                                >
+                                        <span aria-hidden="true">
+                                            ×
+                                        </span>
+
+                                    {isDeleting
+                                        ? "Deleting..."
+                                        : "Delete"}
+                                </button>
                             </div>
-                        </div>
-
-                        <span className="vault-file__type">
-                            {getFileType(file.original_name)}
-                        </span>
-
-                        <button
-                            type="button"
-                            onClick={() => void download(file)}
-                            className="vault-download__button"
-                            title={`${file.original_name} herunterladen`}
-                            disabled={downloadingFileId === file.id}
-                        >
-                            <span aria-hidden="true">↓</span>
-                            {downloadingFileId === file.id
-                                ? "Downloading..."
-                                : "Download"}
-                        </button>
-                    </article>
-                ))}
+                        </article>
+                    );
+                })}
             </div>
         </section>
     );

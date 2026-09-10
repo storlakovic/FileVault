@@ -43,3 +43,14 @@ export function downloadFile(
         },
     );
 }
+
+export function deleteFile(
+    fileId: number,
+): Promise<Blob> {
+    return apiRequest(
+        `/files/${fileId}`,
+        {
+            method: "DELETE",
+        },
+    );
+}
