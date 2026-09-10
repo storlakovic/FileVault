@@ -1,34 +1,31 @@
 # FileVault
-A secure self-hosted file management platform for uploading, organizing, and sharing files.
 
-# FileVault 
+FileVault is a small self-hosted file management application that allows users to create an account and manage their own files through a web interface.
 
-FileVault is a secure, self-hosted file management platform designed for uploading, organizing, and safely sharing files. Built with a strong focus on security, containerization, and modern deployment practices.
+Users can upload files, view their stored files, download them, and delete them again. Authentication ensures that every user can only access their own files.
+
+This project was created as a small side project to refresh my knowledge of full-stack development, Docker, authentication, databases, and API design. While I was already familiar with TypeScript, React, Docker, and JWT authentication, Python and FastAPI were new to me.
+
+AI tools were used throughout the project for guidance, debugging, explanations, and code reviews. The main purpose of FileVault was learning, experimenting, and gaining practical experience rather than building a production-ready storage platform.
 
 ---
 
 ## Features
 
-* **Secure Upload & Download:** Safe handling of file streams with restricted permissions.
-* **User Management:** Secure authentication with robust password hashing.
-* **Share Links:** Generate time-limited or encrypted links to share files securely.
-* **Encryption:** Industry-standard encryption for files at rest.
-* **Storage Management:** Clean dashboard to monitor used space and manage directory structures.
-
----
-
-## Security Architecture
-
-This project is built from the ground up with a multi-layered security approach:
-1. **Network Security:** Nginx acts as a reverse proxy, enforcing HTTPS/SSL and masking backend architecture.
-3. **Data Security:** Environment variables hide sensitive database keys and encryption secrets away from the codebase.
+* User registration and login
+* JWT-based authentication
+* Uploading and listing files
+* Downloading and deleting files
+* Separate file storage for each user
+* Persistent storage through Docker volumes
+* Automated backend tests
 
 ---
 
 ## Tech Stack
 
-* **Infrastructure:** Linux, Docker, Docker Compose, Nginx
-* **Frontend:** React
-* **Backend:** Python FastAPI
-* **Database:** PostgreSQL (Alpine-based)
-
+* **Infrastructure:** Docker, Docker Compose, Nginx
+* **Frontend:** React, TypeScript
+* **Backend:** Python, FastAPI
+* **Database:** PostgreSQL
+* **Testing:** Pytest, GitHub Actions
